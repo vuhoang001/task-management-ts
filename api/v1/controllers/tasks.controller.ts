@@ -3,9 +3,19 @@ import { Response, Request } from "express"
 
 export const index = async (req: Request, res: Response) => {
     try {
-        const task = await tasks.find({
+        interface find {
+            deleted: boolean,
+            status?: string
+        }
+
+        const find: find = {
             deleted: false
-        })
+        }
+
+        if (req.query.status) {
+            find.status = req.query.status.toString()
+        }
+        const task = await tasks.find(find)
         if (!res.headersSent) {
             res.json(task)
         }
