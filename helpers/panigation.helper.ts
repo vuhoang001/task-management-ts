@@ -1,4 +1,11 @@
-const panigation = (objectPanigation, query, countRecords) => {
+interface objectPanigation {
+    currentPage: number,
+    limitItems: number,
+    skip?: number,
+    totalPage?: number
+}
+
+const panigation = (objectPanigation: objectPanigation, query: Record<string, any>, countRecords: number): objectPanigation => {
     if (query.page) {
         objectPanigation.currentPage = parseInt(query.page)
     }

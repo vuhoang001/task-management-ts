@@ -1,3 +1,4 @@
+import panigation from "../../../helpers/panigation.helper"
 import tasks from "../models/tasks.model"
 import { Response, Request } from "express"
 
@@ -22,7 +23,22 @@ export const index = async (req: Request, res: Response) => {
         if (req.query.status) {
             find.status = req.query.status.toString()
         }
-        const task = await tasks.find(find).sort(sort)
+
+        // Painigation 
+        let initPagination = {
+            currentPage: 1,
+            limitItems: 2
+        }
+
+        const countTasks = await tasks.countDocuments(find)
+
+        const objectPanigation = panigation(
+            initPagination,
+            req.query,
+            countTasks
+        )
+        // End panigation 
+        const task = await tasks.find(find).sort(sort).limit(objectPanigation.limitItems).skip(objectPanigation.skip)
         if (!res.headersSent) {
             res.json(task)
         }
