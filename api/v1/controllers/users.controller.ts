@@ -37,3 +37,35 @@ export const register = async (req: Request, res: Response) => {
         )
     }
 }
+
+export const login = async (req: Request, res: Response) => {
+    const password = req.body.password
+    const email = req.body.email
+    const existEmail = await userModel.findOne({
+        email: email,
+        deleted: false
+    })
+
+    if (!existEmail) {
+        res.json({
+            code: 400,
+            message: "Sai tài khoản !"
+        })
+        return;
+    }
+
+    if (md5(password) != existEmail.password) {
+        res.json({
+            code: 400,
+            message: "Sai mật khẩu !"
+        })
+        return;
+    }
+    const token = existEmail.tokenUser
+    res.cookie('token', token)
+    res.json({
+        code: 200,
+        message: "Đăng nhập thành công !",
+        token: token
+    })
+}
