@@ -70,3 +70,25 @@ export const detail = async (req: Request, res: Response) => {
     })
     res.json(task)
 }
+
+export const changeStatus = async (req: Request, res: Response) => {
+    const id: string = req.params.id
+    const status: string = req.body.status
+    try {
+        await tasks.updateOne({
+            _id: id
+        }, {
+            status: status
+        })
+
+        res.json({
+            code: 200,
+            message: "Updated successful !"
+        })
+    } catch (err) {
+        res.json({
+            code: 400,
+            message: "Updated failed !"
+        })
+    }
+}
