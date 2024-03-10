@@ -128,3 +128,20 @@ export const changeMulti = async (req: Request, res: Response) => {
     }
 
 }
+
+export const create = async (req: Request, res: Response) => {
+    try {
+        const data = new tasks(req.body)
+        await data.save()
+
+        res.json({
+            code: 200,
+            message: "Tạo mới thành công !"
+        })
+    } catch (err) {
+        res.json({
+            code: 400,
+            message: "Tạo mới thất bại!"
+        })
+    }
+}
