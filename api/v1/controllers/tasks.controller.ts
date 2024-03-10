@@ -1,4 +1,6 @@
 import panigation from "../../../helpers/panigation.helper"
+import searchHelper from "../../../helpers/search.helper"
+
 import tasks from "../models/tasks.model"
 import { Response, Request } from "express"
 
@@ -6,7 +8,8 @@ export const index = async (req: Request, res: Response) => {
     try {
         interface find {
             deleted: boolean,
-            status?: string
+            status?: string,
+            title?: RegExp
         }
 
         const find: find = {
@@ -24,6 +27,12 @@ export const index = async (req: Request, res: Response) => {
             find.status = req.query.status.toString()
         }
 
+        // Search 
+        let objectSearch = searchHelper(req.query)
+        if (req.query.keyword) {
+            find.title = objectSearch.regex
+        }
+        // End search 
         // Painigation 
         let initPagination = {
             currentPage: 1,
@@ -38,7 +47,11 @@ export const index = async (req: Request, res: Response) => {
             countTasks
         )
         // End panigation 
+
+
         const task = await tasks.find(find).sort(sort).limit(objectPanigation.limitItems).skip(objectPanigation.skip)
+
+
         if (!res.headersSent) {
             res.json(task)
         }
