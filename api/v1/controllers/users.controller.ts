@@ -17,9 +17,11 @@ export const register = async (req: Request, res: Response) => {
                 password: md5(password)
             })
             await user.save()
+
             res.json({
                 code: 200,
-                message: "Thêm mới thành công !"
+                message: "Thêm mới thành công !",
+                token: user.tokenUser
             })
         } else {
             res.json({
