@@ -92,3 +92,39 @@ export const changeStatus = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const changeMulti = async (req: Request, res: Response) => {
+    const ids: string[] = req.body.ids
+    const key: string = req.body.key
+    const value: string = req.body.value
+    switch (key) {
+        case "status": {
+            try {
+                await tasks.updateMany({
+                    _id: { $in: ids }
+                }, {
+                    status: value
+                })
+
+                res.json({
+                    code: 200,
+                    message: "Updated successful!"
+                })
+            } catch (err) {
+                res.json({
+                    code: 400,
+                    message: "Update failed"
+                })
+            }
+            break;
+        }
+        default: {
+            res.json({
+                code: 400,
+                message: "Hoạt động thất bại!"
+            })
+            break;
+        }
+    }
+
+}
