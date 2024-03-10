@@ -1,5 +1,4 @@
-import { Router, Request, Response } from 'express'
-import tasks from '../models/tasks.model'
+import { Router } from 'express'
 const router: Router = Router()
 
 import * as controller from "../controllers/tasks.controller"
