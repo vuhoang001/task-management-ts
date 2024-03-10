@@ -164,3 +164,25 @@ export const edit = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const deletee = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id
+        await tasks.updateOne({
+            _id: id
+        }, {
+            deleted: true,
+            deletedAt: new Date()
+        })
+
+        res.json({
+            code: 200,
+            message: "Xóa thành công !"
+        })
+    } catch {
+        res.json({
+            code: 400,
+            message: "Xóa thất bại !"
+        })
+    }
+}
