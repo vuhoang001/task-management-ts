@@ -12,10 +12,17 @@ export const index = async (req: Request, res: Response) => {
             deleted: false
         }
 
+        const sort = {}
+
+        if (req.query.sortKey && req.query.sortValue) {
+            const sortKey = req.query.sortKey.toLocaleString()
+            sort[sortKey] = req.query.sortValue
+        }
+
         if (req.query.status) {
             find.status = req.query.status.toString()
         }
-        const task = await tasks.find(find)
+        const task = await tasks.find(find).sort(sort)
         if (!res.headersSent) {
             res.json(task)
         }
