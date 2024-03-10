@@ -7,7 +7,7 @@ const mainV1Routes = (app: Express): void => {
 
     app.use(version + `/tasks`, taskRouter)
 
-    app.use(version + `/users`, usersRoute)
+    app.use(version + `/users`,  usersRoute)
 }
 
 export default mainV1Routes
